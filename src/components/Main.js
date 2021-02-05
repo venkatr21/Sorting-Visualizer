@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import React, {Component } from 'react'
 import {mergeSort} from './mergeSort';
 const DEFAULT_COLOR = "red";
 const SPECIFIC_COLOR = "yellow";
 export class Main extends Component {
+
     constructor(){
         super();
         this.state = {
             lock: false,
-            size: 100,
+            size: 30,
             array: [],
         }
+        this.handleChange = this.handleChange.bind(this);
     }
     initArray(){
         const array = [];
@@ -17,13 +19,11 @@ export class Main extends Component {
         array.push(generateRandomInt(5, 800));
         }
         this.setState({array});
-        console.log(100/this.state.size)
     }
     componentDidMount(){
         this.initArray()
     }
     insertionSort(){
-        this.setState({lock: !this.state.lock})
         let arr = this.state.array.slice();
         var n = this.state.size;
         let changes = [];
@@ -48,15 +48,14 @@ export class Main extends Component {
                 setTimeout(()=>{changedBar.backgroundColor = DEFAULT_COLOR;},i*0.1)
             },i*30)
         }
-        this.setState({lock: false})
     }
     bubbleSort(){
-        this.setState({lock: !this.state.lock})
         let arr = this.state.array.slice();
         var n = this.state.size;
+        let i=0;
         let changes = [];
-        for(let i=0;i<n;i++){
-            for(let j=0;j<n-1;j++){
+        for(i=0;i<n;i++){
+            for(let j=0;j<n-i;j++){
                 if(arr[j+1]<arr[j]){
                     changes.push([j,arr[j],arr[j+1]]);
                     var temp = arr[j+1];
@@ -66,7 +65,7 @@ export class Main extends Component {
             }
         }
         const arrTab = document.getElementsByClassName('array-tab');
-        for(let i=0;i<changes.length-1;i++){
+        for(i=0;i<changes.length;i++){
             const [pos, ele1, ele2] = changes[i]
             const changedBar1 = arrTab[pos].style;
             const changedBar2 = arrTab[pos+1].style;
@@ -81,10 +80,9 @@ export class Main extends Component {
                 },i*0.1)
             },i*30)
         }
-        this.setState({lock: false})
     }
     mergeSort() {
-        const changes = mergeSort(this.state.array);
+        const [changes,arr] = mergeSort(this.state.array);
         for (let i = 0; i < changes.length; i++) {
           const arrTab = document.getElementsByClassName('array-tab');
           const [bar1, bar2, spe, val] = changes[i]
@@ -100,12 +98,25 @@ export class Main extends Component {
                     changedBar2.backgroundColor = DEFAULT_COLOR;
                 },i*0.1)
             }, i * 30);
-        } 
+        }
+    }
+    handleChange() {
+        this.setState({size: parseInt(document.getElementById('changeSize').value)});
+        this.initArray();
     }
     render() {
         return (
             <div className="main container">
-                <div className="row justify-content-center align-items-center">Yoo</div><br/><br/>
+                <div className="row justify-content-center align-items-center">
+                <input
+                    id="changeSize"
+                    type="range"
+                    min="20"
+                    max="100"
+                    value={this.state.size}
+                    onChange = {() => this.handleChange()}
+                />
+                </div><br/><br/>
                 <div className="row justify-content-center align-items-center">
                     {
                         this.state.array.map((element,index) =>{

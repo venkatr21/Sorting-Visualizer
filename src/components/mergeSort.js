@@ -2,7 +2,7 @@ export function mergeSort(array) {
     var arr = array.slice();
     var changes = [];
     mergeSortHandler(array, 0, array.length - 1, arr, changes);
-    return changes;
+    return [changes,array];
 }
   
 function mergeSortHandler(array,st,en,arr,changes){

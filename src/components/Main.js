@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import './Main.css';
+const DEFAULT_COLOR = "red";
 export class Main extends Component {
     constructor(){
         super();
         this.state = {
+            lock: false,
             size: 200,
             array: [],
         }
@@ -19,7 +21,35 @@ export class Main extends Component {
     componentDidMount(){
         this.initArray()
     }
-    async bubbleSort(){
+    insertionSort(){
+        this.setState({lock: !this.state.lock})
+        let arr = this.state.array;
+        var n = this.state.size;
+        let changes = [];
+        for (let i = 1; i < n; i++) {
+            let current = arr[i];
+            let j = i-1; 
+            while ((j > -1) && (current < arr[j])) {
+                changes.push([j+1,arr[j]])
+                arr[j+1] = arr[j];
+                j--;
+            }
+            arr[j+1] = current;
+            changes.push([j+1,current])
+        }
+        const arrTab = document.getElementsByClassName('array-tab');
+        for(let i=0;i<changes.length-1;i++){
+            const [pos, ele] = changes[i]
+            const changedBar = arrTab[pos].style;
+            setTimeout(()=>{
+                changedBar.height = `${ele/10}vh`;
+            },i*2)
+        }
+        this.setState({array: arr})
+        this.setState({lock: false})
+    }
+    bubbleSort(){
+        this.setState({lock: !this.state.lock})
         let arr = this.state.array;
         var n = this.state.size;
         let changes = [];
@@ -41,10 +71,10 @@ export class Main extends Component {
             setTimeout(()=>{
                 changedBar1.height = `${ele2/10}vh`;
                 changedBar2.height = `${ele1/10}vh`;
-            },i)
+            },i*2)
         }
-        console.log(changes)
-        return arr;
+        this.setState({array: arr})
+        this.setState({lock: false})
     }
     render() {
         return (
@@ -56,7 +86,7 @@ export class Main extends Component {
                                 <div className="array-tab" key={index}
                                 style={{
                                     width: `3px`,
-                                    backgroundColor: "red",
+                                    backgroundColor: DEFAULT_COLOR,
                                     height: `${element/10}vh`,
                                 }}></div>
                             )
@@ -64,9 +94,14 @@ export class Main extends Component {
                         })
                     }
                 </div>
-                <div className="row">
-                <button onClick={() => this.initArray()}>New Array</button>
-                <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                <br />
+                <div className="row justify-content-center">
+                <button onClick={() => {if(!this.state.lock) this.initArray()}}>New Array</button>
+                <button onClick={() => {if(!this.state.lock) this.bubbleSort()}}>Bubble Sort</button>
+                <button onClick={() => {if(!this.state.lock) this.insertionSort()}}>Insertion Sort</button>
+                <button onClick={() => {if(!this.state.lock) this.initArray()}}>Merge Sort</button>
+                <button onClick={() => {if(!this.state.lock) this.initArray()}}>Quick Sort</button>
+                <button onClick={() => {if(!this.state.lock) this.initArray()}}>Heap Sort</button>
                 </div>
             </div>
         )

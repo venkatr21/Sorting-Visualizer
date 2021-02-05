@@ -22,22 +22,29 @@ export class Main extends Component {
     async bubbleSort(){
         let arr = this.state.array;
         var n = this.state.size;
-        const arrayTab = document.querySelectorAll('.array-tab');
-        console.log(arrayTab)
+        let changes = [];
         for(var i=0;i<n;i++){
             for(var j=0;j<n-1;j++){
                 if(arr[j+1]<arr[j]){
-                    setTimeout(() => {
-                    arrayTab[j+1].style.height = `${arr[j]/10}vh`;
-                    arrayTab[j].style.height = `${arr[j+1]/10}vh`;
-                    },100);
+                    changes.push([j,arr[j],arr[j+1]]);
                     var temp = arr[j+1];
                     arr[j+1] = arr[j];
                     arr[j] = temp;
-                    this.setState({array: arr})
                 }
             }
         }
+        const arrTab = document.getElementsByClassName('array-tab');
+        for(i=0;i<changes.length-1;i++){
+            const [pos, ele1, ele2] = changes[i]
+            const changedBar1 = arrTab[pos].style;
+            const changedBar2 = arrTab[pos+1].style;
+            setTimeout(()=>{
+                changedBar1.height = `${ele2/10}vh`;
+                changedBar2.height = `${ele1/10}vh`;
+            },i)
+        }
+        console.log(changes)
+        return arr;
     }
     render() {
         return (

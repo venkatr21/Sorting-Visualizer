@@ -10,6 +10,7 @@ export class Main extends Component {
             lock: false,
             size: 30,
             array: [],
+            winWidth: window.innerWidth,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -21,9 +22,11 @@ export class Main extends Component {
         this.setState({array});
     }
     componentDidMount(){
+        this.setState({winWidth : window.innerWidth})
         this.initArray()
     }
     insertionSort(){
+        this.setState({lock:true});
         let arr = this.state.array.slice();
         var n = this.state.size;
         let changes = [];
@@ -50,6 +53,7 @@ export class Main extends Component {
         }
     }
     bubbleSort(){
+        this.setState({lock:true});
         let arr = this.state.array.slice();
         var n = this.state.size;
         let i=0;
@@ -104,6 +108,9 @@ export class Main extends Component {
         this.setState({size: parseInt(document.getElementById('changeSize').value)});
         this.initArray();
     }
+    refreshContent(){
+        this.setState({lock:false});
+    }
     render() {
         return (
             <div className="main container">
@@ -112,7 +119,7 @@ export class Main extends Component {
                     id="changeSize"
                     type="range"
                     min="20"
-                    max="100"
+                    max={this.state.winWidth>430?"100":"70"}
                     value={this.state.size}
                     onChange = {() => this.handleChange()}
                 />
@@ -142,6 +149,7 @@ export class Main extends Component {
                     <button className="btn-primary" onClick={() => {if(!this.state.lock) this.mergeSort()}}>Merge Sort</button>
                     <button disabled className="btn-success" onClick={() => {if(!this.state.lock) this.initArray()}}>Quick Sort</button>
                     <button disabled className="btn-danger" onClick={() => {if(!this.state.lock) this.initArray()}}>Heap Sort</button>
+                    <button className="btn-secondary" onClick={() => this.refreshContent()}><span className="fa fa-refresh"></span></button>
                 </div>
             </div>
         )

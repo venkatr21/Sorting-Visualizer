@@ -1,7 +1,9 @@
 import React, {Component } from 'react'
 import {mergeSort} from './mergeSort';
+import {quickSort} from './quickSort';
 const DEFAULT_COLOR = "red";
 const SPECIFIC_COLOR = "yellow";
+const PIVOT_COLOR = "blue";
 export class Main extends Component {
 
     constructor(){
@@ -12,14 +14,13 @@ export class Main extends Component {
             array: [],
             winWidth: window.innerWidth,
         }
-        this.handleChange = this.handleChange.bind(this);
     }
     initArray(){
         const array = [];
         for (let i = 0; i < this.state.size; i++) {
         array.push(generateRandomInt(5, 800));
         }
-        this.setState({array});
+        this.setState({array: array, size: array.length});
     }
     componentDidMount(){
         this.setState({winWidth : window.innerWidth})
@@ -53,7 +54,6 @@ export class Main extends Component {
         }
     }
     bubbleSort(){
-        this.setState({lock:true});
         let arr = this.state.array.slice();
         var n = this.state.size;
         let i=0;
@@ -104,9 +104,33 @@ export class Main extends Component {
             }, i * 30);
         }
     }
+    quickSort() {
+        console.log(this.state.array)
+        var arr=[],changes=[];
+        [arr,changes] = quickSort(this.state.array,0,this.state.array.length,changes);
+        const arrTab = document.getElementsByClassName('array-tab');
+        console.log(arr)
+        for (let i = 0; i < changes.length; i++) {
+            const [bar1, bar2, pivot, val1, val2] = changes[i]
+            const changedBar1 = arrTab[bar1].style;
+            const changedBar2 = arrTab[bar2].style;
+            const pivotBar = arrTab[pivot].style;
+            setTimeout(() => {
+                changedBar1.height = `${val1/15}vh`;
+                changedBar2.height = `${val2/15}vh`;
+                pivotBar.backgroundColor = PIVOT_COLOR;
+                changedBar1.backgroundColor = SPECIFIC_COLOR;
+                changedBar2.backgroundColor = SPECIFIC_COLOR;
+                setTimeout(()=>{
+                    pivotBar.backgroundColor = DEFAULT_COLOR;
+                    changedBar1.backgroundColor = DEFAULT_COLOR;
+                    changedBar2.backgroundColor = DEFAULT_COLOR;
+                },i*0.1)
+            }, i * 30);
+        }
+    }
     handleChange() {
-        this.setState({size: parseInt(document.getElementById('changeSize').value)});
-        this.initArray();
+        this.setState({size: parseInt(document.getElementById('changeSize').value)},this.initArray());
     }
     refreshContent(){
         this.setState({lock:false});
@@ -143,13 +167,71 @@ export class Main extends Component {
                 </div>
                 <br />
                 <div className="row justify-content-center">
-                    <button className="btn-primary" onClick={() => {if(!this.state.lock) this.initArray()}}>New Array</button>
-                    <button className="btn-success" onClick={() => {if(!this.state.lock) this.bubbleSort()}}>Bubble Sort</button>
-                    <button className="btn-danger" onClick={() => {if(!this.state.lock) this.insertionSort()}}>Insertion Sort</button>
-                    <button className="btn-primary" onClick={() => {if(!this.state.lock) this.mergeSort()}}>Merge Sort</button>
-                    <button disabled className="btn-success" onClick={() => {if(!this.state.lock) this.initArray()}}>Quick Sort</button>
-                    <button disabled className="btn-danger" onClick={() => {if(!this.state.lock) this.initArray()}}>Heap Sort</button>
-                    <button className="btn-secondary" onClick={() => this.refreshContent()}><span className="fa fa-refresh"></span></button>
+                    <button 
+                        className="btn-primary" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.initArray()
+                            }
+                            }
+                    }>New Array</button>
+                    <button 
+                        className="btn-success" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.setState({lock:true},()=>{
+                                    this.bubbleSort()
+                                });
+                            } 
+                            }
+                    }>Bubble Sort</button>
+                    <button 
+                        className="btn-danger" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.setState({lock:true},()=>{
+                                    this.insertionSort()
+                                });
+                            } 
+                            }
+                    }>Insertion Sort</button>
+                    <button 
+                        className="btn-primary" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.setState({lock:true},()=>{
+                                    this.mergeSort()
+                                });
+                            } 
+                            }
+                    }>Merge Sort</button>
+                    <button
+                        disabled
+                        className="btn-success" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.setState({lock:true},()=>{
+                                    this.quickSort()
+                                });
+                            } 
+                            }
+                    }>Quick Sort</button>
+                    <button 
+                        disabled
+                        className="btn-danger" 
+                        onClick={() => {
+                            if(!this.state.lock){
+                                this.setState({lock:true},()=>{
+                                    this.heapSort()
+                                });
+                            } 
+                            }
+                    }>Heap Sort</button>
+                    <button 
+                        className="btn-secondary" 
+                        onClick={() => this.refreshContent()}>
+                        <span className="fa fa-refresh"></span>
+                    </button>
                 </div>
             </div>
         )

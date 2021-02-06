@@ -147,12 +147,18 @@ export class Main extends Component {
         return (
             <div className="main container">
                 <div className="row justify-content-center align-items-center">
-                <Slider
+                    <Slider
                     min={20}
                     max={this.state.max}
                     value={size}
                     onChange={this.handleChange}
                     />
+                    <button 
+                        className="btn-secondary ml-4" 
+                        onClick={() => this.refreshContent()}>
+                        <span className="fa fa-refresh"></span>
+                    </button>
+
                 </div><br/><br/>
                 <div className="row content-bars justify-content-center align-items-center">
                     {
@@ -167,7 +173,6 @@ export class Main extends Component {
                                     margin: "0 1px",
                                 }}></div>
                             )
-                            
                         })
                     }
                 </div>
@@ -175,7 +180,7 @@ export class Main extends Component {
                 <br />
                 <div className="row justify-content-center">
                     <button 
-                        className="btn-primary" 
+                        className="btn-primary btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.initArray()
@@ -183,7 +188,7 @@ export class Main extends Component {
                             }
                     }>New Array</button>
                     <button 
-                        className="btn-success" 
+                        className="btn-success btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
@@ -193,7 +198,7 @@ export class Main extends Component {
                             }
                     }>Bubble Sort</button>
                     <button 
-                        className="btn-danger" 
+                        className="btn-danger btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
@@ -203,7 +208,7 @@ export class Main extends Component {
                             }
                     }>Insertion Sort</button>
                     <button 
-                        className="btn-primary" 
+                        className="btn-primary btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
@@ -214,7 +219,7 @@ export class Main extends Component {
                     }>Merge Sort</button>
                     <button
                         disabled
-                        className="btn-success" 
+                        className="btn-success btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
@@ -225,7 +230,7 @@ export class Main extends Component {
                     }>Quick Sort</button>
                     <button 
                         disabled
-                        className="btn-danger" 
+                        className="btn-danger btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
@@ -234,11 +239,6 @@ export class Main extends Component {
                             } 
                             }
                     }>Heap Sort</button>
-                    <button 
-                        className="btn-secondary" 
-                        onClick={() => this.refreshContent()}>
-                        <span className="fa fa-refresh"></span>
-                    </button>
                 </div>
             </div>
         )

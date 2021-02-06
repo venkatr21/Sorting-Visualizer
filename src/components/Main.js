@@ -1,6 +1,8 @@
 import React, {Component } from 'react'
 import {mergeSort} from './mergeSort';
 import {quickSort} from './quickSort';
+import Slider from 'react-rangeslider';
+import 'react-rangeslider/lib/index.css';
 const DEFAULT_COLOR = "red";
 const SPECIFIC_COLOR = "yellow";
 const PIVOT_COLOR = "blue";
@@ -10,9 +12,9 @@ export class Main extends Component {
         super();
         this.state = {
             lock: false,
-            size: 30,
+            size: 40,
             array: [],
-            winWidth: window.innerWidth,
+            max: window.innerWidth>430?100:70,
         }
     }
     initArray(){
@@ -109,7 +111,7 @@ export class Main extends Component {
         var arr=[],changes=[];
         [arr,changes] = quickSort(this.state.array,0,this.state.array.length,changes);
         const arrTab = document.getElementsByClassName('array-tab');
-        console.log(arr)
+        console.log(changes )
         for (let i = 0; i < changes.length; i++) {
             const [bar1, bar2, pivot, val1, val2] = changes[i]
             const changedBar1 = arrTab[bar1].style;
@@ -129,26 +131,30 @@ export class Main extends Component {
             }, i * 30);
         }
     }
-    handleChange() {
-        this.setState({size: parseInt(document.getElementById('changeSize').value)},this.initArray());
-    }
+    handleChange = value => {
+        this.setState({
+          size: value
+        }, () =>{
+
+            if(this.state.size!==this.state.max && this.state.size!==20) this.initArray()
+        })
+      };
     refreshContent(){
         this.setState({lock:false});
     }
     render() {
+        let size = this.state.size;
         return (
             <div className="main container">
                 <div className="row justify-content-center align-items-center">
-                <input
-                    id="changeSize"
-                    type="range"
-                    min="20"
-                    max={this.state.winWidth>430?"100":"70"}
-                    value={this.state.size}
-                    onChange = {() => this.handleChange()}
-                />
+                <Slider
+                    min={20}
+                    max={this.state.max}
+                    value={size}
+                    onChange={this.handleChange}
+                    />
                 </div><br/><br/>
-                <div className="row justify-content-center align-items-center">
+                <div className="row content-bars justify-content-center align-items-center">
                     {
                         this.state.array.map((element,index) =>{
                             return(
@@ -165,6 +171,7 @@ export class Main extends Component {
                         })
                     }
                 </div>
+                <br />
                 <br />
                 <div className="row justify-content-center">
                     <button 

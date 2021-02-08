@@ -8,15 +8,15 @@ function partition(array, left, right, changes) {
     var pivot = array[pivotEle], i = left, j = right;
     while (i <= j) {
         while (array[i] < pivot) {
-            changes.push([i,pivotEle,pivotEle,array[i],pivot]);
+            changes.push([i,j,array[i],array[j],pivotEle]);
             i++;
         }
         while (array[j] > pivot) {
-            changes.push([pivotEle,j,pivotEle,pivot,array[j]]);
+            changes.push([i,j,array[i],array[j],pivotEle]);
             j--;
         }
         if (i <= j) {
-            changes.push([i,j,pivotEle,array[j],array[i]])
+            changes.push([i,j,array[j],array[i],pivotEle]);
             swap(array, i, j);
             i++;
             j--;

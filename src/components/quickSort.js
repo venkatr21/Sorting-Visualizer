@@ -16,17 +16,18 @@ function partition(array, left, right, changes) {
             j--;
         }
         if (i <= j) {
-            changes.push([i,j,array[j],array[i],pivotEle]);
             swap(array, i, j);
+            changes.push([i,j,array[i],array[j],pivotEle]);
             i++;
             j--;
+        }else{
+            changes.push([i,j,array[i],array[j],pivotEle]);
         }
     }
     return i;
 }
 
 export function quickSort(array, left, right, changes) {
-    // console.log(array)
     var index;
     if (array.length > 1) {
         index = partition(array, left, right, changes);
@@ -37,5 +38,5 @@ export function quickSort(array, left, right, changes) {
             quickSort(array, index, right, changes);
         }
     }
-    return [array, changes];
+    return changes;
 }

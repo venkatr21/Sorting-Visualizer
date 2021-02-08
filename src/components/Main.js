@@ -107,30 +107,26 @@ export class Main extends Component {
         }
     }
     quickSort() {
-        console.log(this.state.array)
         var arr=this.state.array.slice(),changes=[];
-        [arr,changes] = quickSort(arr,0,this.state.array.length,changes);
+        changes = quickSort(arr,0,this.state.array.length-1,changes);
         const arrTab = document.getElementsByClassName('array-tab');
-        console.log(arr,changes)
         for (let i = 0; i < changes.length; i++) {
-            var [bar1, bar2, val1, val2, pivot] = changes[i]
-            if(bar1<arrTab.length && bar2<arrTab.length){
-                const changedBar1 = arrTab[bar1].style;
-                const changedBar2 = arrTab[bar2].style;
-                const pivotBar = arrTab[pivot].style;
-                setTimeout(() => {
-                    changedBar1.height = `${val1/15}vh`;
-                    changedBar2.height = `${val2/15}vh`;
-                    pivotBar.backgroundColor = PIVOT_COLOR;
-                    changedBar1.backgroundColor = SPECIFIC_COLOR;
-                    changedBar2.backgroundColor = SPECIFIC_COLOR;
-                    setTimeout(()=>{
-                        pivotBar.backgroundColor = DEFAULT_COLOR;
-                        changedBar1.backgroundColor = DEFAULT_COLOR;
-                        changedBar2.backgroundColor = DEFAULT_COLOR;
-                    },i*0.1)
-                }, i * 30);
-            }
+            const [bar1, bar2, val1, val2, pivot] = changes[i]
+            const changedBar1 = arrTab[bar1].style;
+            const changedBar2 = arrTab[bar2].style;
+            const pivotBar = arrTab[pivot].style;
+            setTimeout(() => {
+                changedBar1.height = `${val1/15}vh`;
+                changedBar2.height = `${val2/15}vh`;
+                pivotBar.backgroundColor = PIVOT_COLOR;
+                changedBar1.backgroundColor = SPECIFIC_COLOR;
+                changedBar2.backgroundColor = SPECIFIC_COLOR;
+                setTimeout(()=>{
+                    pivotBar.backgroundColor = DEFAULT_COLOR;
+                    changedBar1.backgroundColor = DEFAULT_COLOR;
+                    changedBar2.backgroundColor = DEFAULT_COLOR;
+                },i*0.1)
+            }, i * 30);
                         
         }
     }

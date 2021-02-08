@@ -6,6 +6,7 @@ import 'react-rangeslider/lib/index.css';
 const DEFAULT_COLOR = "red";
 const SPECIFIC_COLOR = "yellow";
 const PIVOT_COLOR = "blue";
+const SUCCESS_COLOR = "green";
 export class Main extends Component {
 
     constructor(){
@@ -27,6 +28,28 @@ export class Main extends Component {
     componentDidMount(){
         this.setState({winWidth : window.innerWidth})
         this.initArray()
+    }
+    twillight(){
+        const arrTab = document.getElementsByClassName('array-tab');
+        for(var i=0;i<arrTab.length;i++){
+            arrTab[i].style.backgroundColor = SUCCESS_COLOR
+        }
+        setTimeout(()=>{
+            for(var i=0;i<arrTab.length;i++){
+                arrTab[i].style.backgroundColor = DEFAULT_COLOR
+            }
+            setTimeout(()=>{
+                for(var i=0;i<arrTab.length;i++){
+                    arrTab[i].style.backgroundColor = SUCCESS_COLOR
+                }
+                setTimeout(()=>{
+                    for(var i=0;i<arrTab.length;i++){
+                        arrTab[i].style.backgroundColor = DEFAULT_COLOR
+                    }
+                },400)
+            },400)
+        },400)
+        
     }
     insertionSort(){
         this.setState({lock:true});
@@ -89,8 +112,8 @@ export class Main extends Component {
     }
     mergeSort() {
         const [changes,arr] = mergeSort(this.state.array);
+        const arrTab = document.getElementsByClassName('array-tab');
         for (let i = 0; i < changes.length; i++) {
-          const arrTab = document.getElementsByClassName('array-tab');
           const [bar1, bar2, spe, val] = changes[i]
             const changedBar1 = arrTab[bar1].style;
             const changedBar2 = arrTab[bar2].style;
@@ -110,7 +133,7 @@ export class Main extends Component {
         var arr=this.state.array.slice(),changes=[];
         changes = quickSort(arr,0,this.state.array.length-1,changes);
         const arrTab = document.getElementsByClassName('array-tab');
-        for (let i = 0; i < changes.length; i++) {
+        for (var i = 0; i < changes.length; i++) {
             const [bar1, bar2, val1, val2, pivot] = changes[i]
             const changedBar1 = arrTab[bar1].style;
             const changedBar2 = arrTab[bar2].style;
@@ -126,8 +149,7 @@ export class Main extends Component {
                     changedBar1.backgroundColor = DEFAULT_COLOR;
                     changedBar2.backgroundColor = DEFAULT_COLOR;
                 },i*0.1)
-            }, i * 30);
-                        
+            }, i * 30);             
         }
     }
     handleChange = value => {
@@ -154,7 +176,7 @@ export class Main extends Component {
                     />
                     <button 
                         className="btn-secondary ml-4" 
-                        onClick={() => this.refreshContent()}>
+                        onClick={() =>{ this.refreshContent(); this.twillight()}}>
                         <span className="fa fa-refresh"></span>
                     </button>
 
@@ -217,7 +239,6 @@ export class Main extends Component {
                             }
                     }>Merge Sort</button>
                     <button
-                        // disabled
                         className="btn-success btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
@@ -233,7 +254,7 @@ export class Main extends Component {
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
-                                    this.heapSort()
+                                    this.twillight()
                                 });
                             } 
                             }

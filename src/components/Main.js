@@ -158,7 +158,7 @@ export class Main extends Component {
         changes = heapSort(arr);
         const arrTab = document.getElementsByClassName('array-tab');
         for (var i = 0; i < changes.length; i++) {
-            const [bar1, bar2, val1, val2, maxi] = changes[i]
+            const [bar1, bar2, val1, val2] = changes[i]
             const changedBar1 = arrTab[bar1].style;
             const changedBar2 = arrTab[bar2].style;
             setTimeout(() => {

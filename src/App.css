@@ -41,4 +41,5 @@
 .content-bars {
   height: 50vh;
   max-height: 50vh;
+  position: relative;
 }

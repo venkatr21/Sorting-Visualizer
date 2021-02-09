@@ -1,6 +1,7 @@
 import React, {Component } from 'react'
 import {mergeSort} from './mergeSort';
 import {quickSort} from './quickSort';
+import {heapSort} from './heapSort';
 import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
 const DEFAULT_COLOR = "red";
@@ -152,6 +153,26 @@ export class Main extends Component {
             }, i * 30);             
         }
     }
+    heapSort() {
+        var arr=this.state.array.slice(),changes=[];
+        changes = heapSort(arr);
+        const arrTab = document.getElementsByClassName('array-tab');
+        for (var i = 0; i < changes.length; i++) {
+            const [bar1, bar2, val1, val2, maxi] = changes[i]
+            const changedBar1 = arrTab[bar1].style;
+            const changedBar2 = arrTab[bar2].style;
+            setTimeout(() => {
+                changedBar1.height = `${val1/15}vh`;
+                changedBar2.height = `${val2/15}vh`;
+                changedBar1.backgroundColor = SPECIFIC_COLOR;
+                changedBar2.backgroundColor = SPECIFIC_COLOR;
+                setTimeout(()=>{
+                    changedBar1.backgroundColor = DEFAULT_COLOR;
+                    changedBar2.backgroundColor = DEFAULT_COLOR;
+                },i*0.05)
+            }, i * 30);             
+        }
+    }
     handleChange = value => {
         this.setState({
           size: value
@@ -249,12 +270,12 @@ export class Main extends Component {
                             }
                     }>Quick Sort</button>
                     <button 
-                        disabled
+                        // disabled
                         className="btn-danger btn-sm" 
                         onClick={() => {
                             if(!this.state.lock){
                                 this.setState({lock:true},()=>{
-                                    this.twillight()
+                                    this.heapSort()
                                 });
                             } 
                             }
